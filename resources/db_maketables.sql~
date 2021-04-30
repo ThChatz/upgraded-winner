@@ -1,0 +1,31 @@
+-- tables
+create table users (
+       user_id serial primary key,
+       username varchar(50) unique not null,
+       password varchar(64) not null,
+       email varchar(255) unique not null
+);
+
+create table user_friend (
+       user integer,
+       friend integer
+);
+
+create table user_blocked (
+       user integer,
+       blocked integer
+);
+
+create table conversation_message (
+       conversation integer,
+       message text
+);
+
+create table conversation (
+       conv_id serial primary key     
+);
+
+create table user_conversation (
+       user integer,
+       conversation integer
+);
