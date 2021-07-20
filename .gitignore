@@ -10,3 +10,4 @@ pom.xml
 .lein-plugins
 .lein-env
 m2/*
+.calva/output-window/output.calva-repl
