@@ -9,8 +9,10 @@
             [reitit.ring.coercion :as rrc]
             [reitit.coercion.spec :as spec]
             [reitit.ring.middleware.exception]
+            [ring.middleware.session :refer [wrap-session]]
             [clojure.spec.alpha :as s]
-            [upgraded-winner.views.error :as views.error]))
+            [upgraded-winner.views.error :as views.error]
+            [upgraded-winner.actions.account :as account-actions]))
 
 (defn init []
   (println "upgraded-winner is starting")
@@ -41,9 +43,27 @@
       {:name ::test
        :coercion spec/coercion
        :parameters {:query {:foo int?}}
-       :middleware [spec-coercion-error-middleware
-                    rrc/coerce-exceptions-middleware
-                    wrap-params
-                    rrc/coerce-request-middleware
-                    rrc/coerce-response-middleware]
-       :handler (fn [req] {:status 200 :body (str req)})}]])))
+       :handler (fn [req] {:status 200 :body (str req)})}]
+     ["/actions"
+      ["/login"
+       {:post 
+        {:name :account-actions/login
+         :coercion spec/coercion
+         :parameters {:body {:username #(not (nil? %))
+                             :password #(not (nil? %))}}
+         :handler (fn [req]
+                    {:status 303
+                     :body ((account-actions/login (get-in req [:parameters :body])) :id)
+                     :session (assoc-in
+                               req
+                               [:session :user-id]
+                               (account-actions/login
+                                (get-in req [:parameters :body])))})
+         :middleware [wrap-session
+                      spec-coercion-error-middleware
+                      rrc/coerce-exceptions-middleware
+                      wrap-params
+                      rrc/coerce-request-middleware
+                      rrc/coerce-response-middleware]}}]]])))
+
+(app {:request-method :post :uri "/actions/login" :body-params {:username "foo" :password "bar"}})

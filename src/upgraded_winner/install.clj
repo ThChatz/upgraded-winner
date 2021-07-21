@@ -9,9 +9,6 @@
             [clojure.java.jdbc :refer [db-do-commands with-db-connection db-do-prepared]]
             [clojure.java.io :refer [resource]]))
 
-(hugsql/def-sqlvec-fns "queries/make_db.sql")
-(hugsql/def-db-fns "queries/make_db.sql")
-
 (def db {:dbtype "postgresql"
          :dbname "upgraded_winner"
          :user "postgres"
