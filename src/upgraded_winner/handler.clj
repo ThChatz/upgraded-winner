@@ -41,29 +41,45 @@
    (ring/router
     [["/test"
       {:name ::test
-       :coercion spec/coercion
-       :parameters {:query {:foo int?}}
-       :handler (fn [req] {:status 200 :body (str req)})}]
+       :handler (fn [req] {:status 200 :body (str req)})
+       :middleware [wrap-params wrap-session]}]
      ["/actions"
+      {:coercion spec/coercion
+       :middleware [spec-coercion-error-middleware
+                    rrc/coerce-exceptions-middleware
+                    rrc/coerce-request-middleware
+                    rrc/coerce-response-middleware]}
       ["/login"
-       {:post 
+       {:post
         {:name :account-actions/login
-         :coercion spec/coercion
          :parameters {:body {:username #(not (nil? %))
                              :password #(not (nil? %))}}
          :handler (fn [req]
                     {:status 303
-                     :body ((account-actions/login (get-in req [:parameters :body])) :id)
+                     :body (str (req))
                      :session (assoc-in
                                req
                                [:session :user-id]
-                               (account-actions/login
-                                (get-in req [:parameters :body])))})
-         :middleware [wrap-session
-                      spec-coercion-error-middleware
-                      rrc/coerce-exceptions-middleware
-                      wrap-params
-                      rrc/coerce-request-middleware
-                      rrc/coerce-response-middleware]}}]]])))
+                               ((account-actions/login (get-in req [:parameters :body])) :id))})}}]]]
+    {:data {:middleware [wrap-session
+                         wrap-params]}})))
 
-(app {:request-method :post :uri "/actions/login" :body-params {:username "foo" :password "bar"}})
+(defn get-cookie []
+  (second
+   (clojure.string/split
+    (first
+     (get-in
+      (app {:request-method :post
+            :uri "/actions/login"
+            :body-params {:username "foo" :password "bar"}})
+      [:headers "Set-Cookie"]))
+    #"=|;")))
+(get-cookie)
+
+(get-in
+ (app {:request-method :post
+       :uri "/actions/login"
+       :body-params {:username "foo" :password "bar"}})
+ [:headers "Set-Cookie"])
+ 
+(app {:request-method :post :uri "/actions/login" :headers {"cookie" (str "ring-session=" "15660de2-06f3-4866-9a44-962b3e5cc5ce")} :body-params {:username "foo" :password "bar"}})

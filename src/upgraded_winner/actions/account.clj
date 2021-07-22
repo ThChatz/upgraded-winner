@@ -12,11 +12,6 @@
 
 (hugsql/def-db-fns "queries/account.sql")
 
-(create db
-        {:username "foo"
-         :password "bar"
-         :email "foo@bar.com"})
-
 ;; from https://gist.github.com/kubek2k/8446062#gistcomment-3009390
 (defn sha256 [string]
   (let [digest (.digest (java.security.MessageDigest/getInstance "SHA-256") (.getBytes string "UTF-8"))]
