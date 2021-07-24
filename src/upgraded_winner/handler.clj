@@ -12,11 +12,11 @@
             [ring.middleware.session :refer [wrap-session]]
             [clojure.spec.alpha :as s]
             [upgraded-winner.views.error :as views.error]
-            [upgraded-winner.actions.account :as account-actions]))
+            [upgraded-winner.actions.account :as account-actions]
+            [upgraded-winner.middleware :refer [wrap-create-session]]))
 
 (defn init []
-  (println "upgraded-winner is starting")
-)
+  (println "upgraded-winner is starting"))
 (defn destroy []
   (println "upgraded-winner is shutting down"))
 
@@ -36,34 +36,28 @@
       (if (not (nil? (-> response :body :spec)))
         (reitit.ring.middleware.exception/default-handler response)))))
 
+(def top-level-middleware
+  [wrap-session
+   wrap-create-session
+   spec-coercion-error-middleware
+   rrc/coerce-exceptions-middleware
+   wrap-params
+   rrc/coerce-request-middleware
+   rrc/coerce-response-middleware])
+
 (def app
   (ring/ring-handler
    (ring/router
     [["/test"
       {:name ::test
-       :coercion spec/coercion
        :parameters {:query {:foo int?}}
-       :handler (fn [req] {:status 200 :body (str req)})}]
+       :handler (fn [req] {:status 200 :body (str req) :session {}})}]
      ["/actions"
-      ["/login"
-       {:post 
-        {:name :account-actions/login
-         :coercion spec/coercion
-         :parameters {:body {:username #(not (nil? %))
-                             :password #(not (nil? %))}}
-         :handler (fn [req]
-                    {:status 303
-                     :body ((account-actions/login (get-in req [:parameters :body])) :id)
-                     :session (assoc-in
-                               req
-                               [:session :user-id]
-                               (account-actions/login
-                                (get-in req [:parameters :body])))})
-         :middleware [wrap-session
-                      spec-coercion-error-middleware
-                      rrc/coerce-exceptions-middleware
-                      wrap-params
-                      rrc/coerce-request-middleware
-                      rrc/coerce-response-middleware]}}]]])))
+      account-actions/login-route
+      account-actions/register-route]]
+    {:data
+     {:coercion spec/coercion
+      :middleware top-level-middleware}})))
 
-(app {:request-method :post :uri "/actions/login" :body-params {:username "foo" :password "bar"}})
+
+
