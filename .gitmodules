@@ -1,0 +1,3 @@
+[submodule "upgraded-winner-frontend"]
+	path = upgraded-winner-frontend
+	url = git@github.com:ThChatz/upgraded-winner-frontend.git
