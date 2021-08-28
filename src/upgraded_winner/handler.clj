@@ -13,6 +13,7 @@
             [clojure.spec.alpha :as s]
             [upgraded-winner.views.error :as views.error]
             [upgraded-winner.actions.account :as account-actions]
+            [upgraded-winner.actions.post :as post-actions]
             [upgraded-winner.middleware :refer [wrap-create-session]]))
 
 (defn init []
@@ -54,7 +55,8 @@
        :handler (fn [req] {:status 200 :body (str req) :session {}})}]
      ["/actions"
       account-actions/login-route
-      account-actions/register-route]]
+      account-actions/register-route
+      post-actions/create-post]]
     {:data
      {:coercion spec/coercion
       :middleware top-level-middleware}})))

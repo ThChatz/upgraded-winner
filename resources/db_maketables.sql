@@ -29,3 +29,28 @@ create table if not exists usr_conversation (
        usr integer,
        conversation integer
 );
+
+create table if not exists post (
+       id serial primary key,
+       usr integer,
+       created_at timestamp default Now(),
+       media integer,
+       content text
+);
+
+create table if not exists user_uploads (
+       id serial primary key
+);
+
+
+create table if not exists comment_post (
+       usr integer,
+       post integer,
+       comment serial primary key
+);
+
+create table if not exists usr_react_post (
+       usr integer,
+       react integer,
+       post integer
+);

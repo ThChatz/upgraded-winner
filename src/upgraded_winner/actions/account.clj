@@ -1,7 +1,8 @@
 (ns upgraded-winner.actions.account
   (:require [hugsql.core :as hugsql]
             [clojure.spec.alpha :as s]
-            [clojure.string :as str]))
+            [clojure.string :as str]
+            [upgraded-winner.db :refer [ db ]]))
 ;; specs
 (s/def ::username
   #(re-matches #"[a-zA-Z0-9_\-]{1,30}" %))
@@ -10,13 +11,6 @@
   (s/def ::email #(re-matches email-regex %)))
 
 (s/def ::password (complement nil?))
-
-
-(def db {:dbtype "postgresql"
-         :dbname "upgraded_winner"
-         :user "postgres"
-         :host "db"
-         :password "1234"})
 
 
 (hugsql/def-sqlvec-fns "queries/account.sql")
