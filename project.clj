@@ -7,7 +7,8 @@
                  [ring-server "0.5.0"]
                  [ring/ring-json "0.5.1"]
                  [com.layerware/hugsql "0.5.1"]
-                 [org.postgresql/postgresql "42.2.2"]]
+                 [org.postgresql/postgresql "42.2.2"]
+                 [ring/ring-defaults "0.3.3"]]
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler upgraded-winner.handler/app
          :init upgraded-winner.handler/init
@@ -22,6 +23,7 @@
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}}
    :dev
-   {:dependencies [[ring/ring-mock "0.4.0"] [ring/ring-devel "1.7.1"]]}
-   :repl {:plugins [[cider/cider-nrepl "0.25.2"]]}}
-  :main upgraded-winner.repl)
+   {:dependencies [[ring/ring-mock "0.4.0"] [ring/ring-devel "1.7.1"]]
+    :source-paths ["src" "dev-src"]
+    :main upgraded-winner.repl}
+   :repl {:plugins [[cider/cider-nrepl "0.25.2"]]}})

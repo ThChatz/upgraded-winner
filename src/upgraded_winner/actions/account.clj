@@ -54,18 +54,18 @@
 
 (def login-route
   ["/login"
-       {:post
-        {:name ::login
-         :parameters {:body {:username ::username
+       {:name ::login
+        :post
+        {:parameters {:body {:username ::username
                              :password ::password}}
          :handler login-handler}}])
 
 
 (def register-route
   ["/register"
-   {:post
-    {:name ::register
-     :parameters {:body {:username ::username
+   {:name ::register
+    :post
+    {:parameters {:body {:username ::username
                          :password ::password
                          :email ::email}}
      :handler register-handler}}])

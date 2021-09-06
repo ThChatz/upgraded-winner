@@ -15,7 +15,7 @@
 
 (def make-post-route
   ["/new-post"
-   {:new-post
-    {:name ::new-post
-     :parameters {:body {:text (complement nil?)}}
+   {:name ::new-post
+    :post
+    {:parameters {:body {:text (complement nil?)}}
      :handler create-post}}])
