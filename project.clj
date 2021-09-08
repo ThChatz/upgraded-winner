@@ -16,14 +16,15 @@
   :repl-options 
   {:host "0.0.0.0"
    :port 3001
-   :init-ns upgraded-winner.repl}  
+   :init-ns upgraded-winner-dev.repl}  
   :profiles
   {:uberjar {:aot :all}
    :production
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}}
    :dev
-   {:dependencies [[ring/ring-mock "0.4.0"] [ring/ring-devel "1.7.1"]]
+   {:dependencies [[ring/ring-mock "0.4.0"] [ring/ring-devel "1.7.1"] [cider/cider-nrepl "0.25.2"]]
     :source-paths ["src" "dev-src"]
-    :main upgraded-winner.repl}
-   :repl {:plugins [[cider/cider-nrepl "0.25.2"]]}})
+    :main upgraded-winner-dev.repl}
+   :repl {:plugins [[cider/cider-nrepl "0.25.2"]]}}
+  :resource-paths ["./resources" "./upgraded-winner-frontend/build"])
