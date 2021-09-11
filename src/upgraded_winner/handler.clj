@@ -5,9 +5,11 @@
             [reitit.ring.middleware.exception]
             [ring.util.response :refer [resource-response]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
-            [upgraded-winner.actions.account :as account-actions]
-            [upgraded-winner.actions.post :as post-actions]
-            [upgraded-winner.middleware :refer [wrap-create-session]]))
+            [upgraded-winner.routes.user :as user]
+            [upgraded-winner.routes.session :as session]
+            [upgraded-winner.routes.post :as post]
+            [upgraded-winner.middleware :refer [wrap-create-session muuntaja-instance]]
+            [reitit.ring.middleware.muuntaja :as muuntaja]))
 
 (defn init []
   (println "upgraded-winner is starting"))
@@ -16,6 +18,7 @@
 
 (def top-level-middleware
   [[wrap-defaults site-defaults]
+   muuntaja/format-middleware
    coercion/coerce-exceptions-middleware
    coercion/coerce-request-middleware
    coercion/coerce-response-middleware])
@@ -25,16 +28,19 @@
    (ring/router
     [["/test"
       {:name ::test
-       :parameters {:query {:foo int?}}
-       :handler (fn [req] {:status 200 :body (str "<div>"req"</div>") :session {}})}]
-     ["/actions"
-      account-actions/login-route
-      account-actions/register-route
-      post-actions/make-post-route]]
+       :handler (fn [req] {:status 200 :body {:foo "bar"}})}]
+     user/route
+     session/route
+     post/route]
     {:data
-     {:coercion spec/coercion
+     {:muuntaja muuntaja-instance
+      :coercion spec/coercion
       :middleware top-level-middleware}})
    (ring/create-resource-handler {:path "/"})))
 
 
+(app {:request-method :get :uri "/post/1"})
+(app {:request-method :post
+      :uri "/post"
+      :body-params {:text "foo"}})
 
