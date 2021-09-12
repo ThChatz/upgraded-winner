@@ -3,7 +3,7 @@
             [muuntaja.format.core :as mfc])
   (:import (java.io OutputStream)))
 
-(declare data->xml)
+(declare _data->xml)
 
 (defn- kv->xml [k v]
   (cond
@@ -12,7 +12,7 @@
     (or (int? v) (string? v)) (element k {} v)
     :else (element k {} (str v))))
 
-(defn _data->xml [data & {:keys [outer-name] :or {outer-name "results"}}]
+(defn- _data->xml [data & {:keys [outer-name] :or {outer-name "results"}}]
   (cond
     (map? data) (map (fn [[k v]] (kv->xml k v)) data)
     (seq? data) (map (partial kv->xml outer-name) data)
