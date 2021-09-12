@@ -8,6 +8,8 @@
             [upgraded-winner.routes.user :as user]
             [upgraded-winner.routes.session :as session]
             [upgraded-winner.routes.post :as post]
+            [upgraded-winner.routes.post.comment :as post.comment]
+            [upgraded-winner.routes.post.comments :as post.comments]
             [upgraded-winner.middleware :refer [wrap-create-session muuntaja-instance]]
             [reitit.ring.middleware.muuntaja :as muuntaja]))
 
@@ -31,16 +33,12 @@
        :handler (fn [req] {:status 200 :body {:foo "bar"}})}]
      user/route
      session/route
-     post/route]
+     post/route-id
+     post/route
+     post.comment/route
+     post.comments/route]
     {:data
      {:muuntaja muuntaja-instance
       :coercion spec/coercion
       :middleware top-level-middleware}})
    (ring/create-resource-handler {:path "/"})))
-
-
-(app {:request-method :get :uri "/post/1"})
-(app {:request-method :post
-      :uri "/post"
-      :body-params {:text "foo"}})
-

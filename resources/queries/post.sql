@@ -13,3 +13,8 @@ WHERE id=:id
 UPDATE post
 SET text=:text
 WHERE id=:id AND usr=:usr
+
+-- :name delete-post :! :n
+-- :doc Delete a post
+DELETE FROM post
+WHERE id=:id AND usr=:usr
