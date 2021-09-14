@@ -1,6 +1,16 @@
 (ns upgraded-winner.middleware
   (:require [upgraded-winner.xml-format :refer [xml-format]]
-            [muuntaja.core :as m]))
+            [muuntaja.core :as m]
+            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [reitit.ring.coercion :as coercion]
+            [reitit.ring.middleware.exception]
+            [ring.middleware.anti-forgery :refer [wrap-anti-forgery *anti-forgery-token*]]
+            [reitit.ring.middleware.parameters :refer [parameters-middleware]]
+            [ring.middleware.session :refer [wrap-session]]
+            [ring.middleware.session.memory :refer [memory-store]]))
+
+
 
 (defn wrap-create-session [handler]
   (fn [req]
@@ -15,3 +25,28 @@
   (m/create
    (-> m/default-options
        (assoc-in ,,, [:formats "application/xml"] xml-format))))
+
+(def anti-forgery-opts
+  {:read-token (fn [req] (-> req :body-params :__anti-forgery-token))})
+
+(def my-defaults
+  (->
+   site-defaults
+   (assoc :params false)
+   (assoc :session false)
+   (assoc-in [:security :anti-forgery] false)
+   (assoc :static false)
+   (assoc-in [:responses :content-types] false)))
+
+
+(def session-store (memory-store))
+
+(def top-level-middleware
+  [[wrap-session {:store session-store}]
+   muuntaja/format-middleware
+   parameters-middleware
+   [wrap-defaults my-defaults]
+   [wrap-anti-forgery anti-forgery-opts]
+   coercion/coerce-exceptions-middleware
+   coercion/coerce-request-middleware
+   coercion/coerce-response-middleware])
