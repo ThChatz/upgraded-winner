@@ -22,6 +22,16 @@
        :body user
        :session (assoc
                  session
+                 :identity (user :id))})))
+
+(defn get-handler [{{user-info :body} :parameters session :session}]
+  (let [user (->> user-info (get-login db ,,,) first)]
+    (if (nil? user)
+      {:status 401 :body {}}
+      {:status 200
+       :body {}
+       :session (assoc
+                 session
                  :user-id (user :id))})))
 
 
