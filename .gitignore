@@ -12,3 +12,4 @@ pom.xml
 m2/*
 .calva/output-window/output.calva-repl
 .vscode/settings.json
+.clj-kondo/*
