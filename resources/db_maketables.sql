@@ -1,7 +1,8 @@
 -- tables
 create table if not exists usr (
        id serial primary key,
-       username varchar(50) unique not null,
+       first_name varchar(50) not null,
+       last_name varchar(50) not null,
        password varchar(64) not null,
        email varchar(255) unique not null
 );

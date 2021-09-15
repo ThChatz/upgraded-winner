@@ -2,7 +2,9 @@
   (:require [hugsql.core :as hugsql]
             [clojure.spec.alpha :as s]
             [clojure.string :as str]
-            [upgraded-winner.db :refer [ db ]]))
+            [upgraded-winner.db :refer [ db ]]
+            [upgraded-winner.routes.post.comment :as comment]
+            [upgraded-winner.routes.post.comments :as comments]))
 
 (s/def ::post-id int?)
 (s/def ::post-id int?)
@@ -40,22 +42,25 @@
 
 
 (def route
-  ["/post"
+  [""
+   ["/post"
    {:name ::post
     :post
     {:parameters {:body {:text (complement nil?)}}
-     :handler post-handler}}])
-
-(def route-id
-  ["/post/:post-id"
+     :handler post-handler}}]
+   ["/post/:post-id"
     {:name ::post-id
      :get
-     {:parameters {:path {:post-id int?}}
+     {:parameters {:path {:post-id pos-int?}}
       :handler get-handler}
      :put
      {:parameters {:body {:text (complement nil?)}
-                   :path {:post-id int?}}
+                   :path {:post-id pos-int?}}
       :handler put-handler}
      :delete
-     {:parameters {:path {:post-id int?}}
-      :handler delete-handler}}])
+     {:parameters {:path {:post-id pos-int?}}
+      :handler delete-handler}}]
+   comment/route
+   comments/route])
+
+
