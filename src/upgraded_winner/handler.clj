@@ -15,7 +15,6 @@
    (ring/router
     route-tree
     {:data
-     {:muuntaja muuntaja-instance
+     {:muuntaja mw/muuntaja-instance
       :coercion spec/coercion
-      :middleware mw/top-level-middleware}})
-   (ring/create-resource-handler {:path "/"})))
+      :middleware mw/top-level-middleware}})))

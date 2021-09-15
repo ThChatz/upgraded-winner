@@ -27,5 +27,6 @@
        [(slurp (resource "db_maketables.sql"))]))
     nil))
 
-;; (make-database!)
+;; 
+(make-database!)
 
