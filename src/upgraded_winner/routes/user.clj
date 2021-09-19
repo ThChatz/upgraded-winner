@@ -62,7 +62,7 @@
         user-info (get-usr db {:id user-id :connected connected})]
     (if (empty? user-info)
       {:status 404 :body {:error (str "User " user-id-param " not found.")}}
-      {:status 200 :body user-info})))
+      {:status 200 :body (-> user-info first (dissoc :password))})))
 
 ;; ================================================================================
 ;;                                     ROUTES

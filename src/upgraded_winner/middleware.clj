@@ -4,7 +4,7 @@
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.coercion :as coercion]
-            [reitit.ring.middleware.exception]
+            [reitit.ring.middleware.exception :as exception]
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery *anti-forgery-token*]]
             [reitit.ring.middleware.parameters :refer [parameters-middleware]]
             [ring.middleware.session :refer [wrap-session]]
@@ -53,4 +53,5 @@
    [wrap-anti-forgery anti-forgery-opts]
    coercion/coerce-exceptions-middleware
    coercion/coerce-request-middleware
-   coercion/coerce-response-middleware])
+   coercion/coerce-response-middleware
+   exception/exception-middleware])

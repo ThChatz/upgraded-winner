@@ -1,5 +1,6 @@
 (ns upgraded-winner.routes.core
-  (:require [upgraded-winner.routes.user :as user]
+  (:require [reitit.ring :refer [create-resource-handler]]
+            [upgraded-winner.routes.user :as user]
             [upgraded-winner.routes.session :as session]
             [upgraded-winner.routes.anti-forgery-token :as anti-forgery-token]
             [upgraded-winner.routes.post :as post]
@@ -11,4 +12,7 @@
   [anti-forgery-token/route
    user/route
    session/route
-   post/route])
+   post/route
+   ["/*" {:handler (create-resource-handler)}]])
+
+

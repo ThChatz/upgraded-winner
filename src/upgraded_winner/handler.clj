@@ -14,7 +14,8 @@
   (ring/ring-handler
    (ring/router
     route-tree
-    {:data
+    {:conflicts (constantly nil)
+     :data
      {:muuntaja mw/muuntaja-instance
       :coercion spec/coercion
       :middleware mw/top-level-middleware}})))
