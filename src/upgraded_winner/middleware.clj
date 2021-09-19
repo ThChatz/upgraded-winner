@@ -8,7 +8,8 @@
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery *anti-forgery-token*]]
             [reitit.ring.middleware.parameters :refer [parameters-middleware]]
             [ring.middleware.session :refer [wrap-session]]
-            [ring.middleware.session.memory :refer [memory-store]]))
+            [ring.middleware.session.memory :refer [memory-store]]
+            [reitit.ring.middleware.multipart :as multipart]))
 
 
 
@@ -27,7 +28,9 @@
        (assoc-in ,,, [:formats "application/xml"] xml-format))))
 
 (def anti-forgery-opts
-  {:read-token (fn [req] (-> req :body-params :__anti-forgery-token))})
+  {:read-token (fn [req] (or (-> req :body-params :__anti-forgery-token)
+                            (-> req :multipart-params :__anti-forgery-token)
+                            (-> req :headers "X-CSRF-TOKEN")))})
 
 (def my-defaults
   (->
@@ -45,6 +48,7 @@
   [[wrap-session {:store session-store}]
    muuntaja/format-middleware
    parameters-middleware
+   multipart/multipart-middleware
    [wrap-defaults my-defaults]
    [wrap-anti-forgery anti-forgery-opts]
    coercion/coerce-exceptions-middleware
