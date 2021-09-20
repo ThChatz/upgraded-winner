@@ -29,8 +29,7 @@
 
 (def anti-forgery-opts
   {:read-token (fn [req] (or (-> req :body-params :__anti-forgery-token)
-                            (-> req :multipart-params :__anti-forgery-token)
-                            (-> req :headers "X-CSRF-TOKEN")))})
+                            (get-in req [:headers "x-csrf-token"])(print req)))})
 
 (def my-defaults
   (->
@@ -45,13 +44,14 @@
 (def session-store (memory-store))
 
 (def top-level-middleware
-  [[wrap-session {:store session-store}]
+  [   
+[wrap-session {:store session-store}]
    muuntaja/format-middleware
+   exception/exception-middleware
    parameters-middleware
    multipart/multipart-middleware
    [wrap-defaults my-defaults]
    [wrap-anti-forgery anti-forgery-opts]
-   coercion/coerce-exceptions-middleware
    coercion/coerce-request-middleware
    coercion/coerce-response-middleware
-   exception/exception-middleware])
+   coercion/coerce-exceptions-middleware])

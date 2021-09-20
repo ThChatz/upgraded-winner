@@ -11,7 +11,8 @@
                  [org.postgresql/postgresql "42.2.2"]
                  [ring/ring-defaults "0.3.3"]
                  [buddy/buddy-core "1.10.1"]
-                 [buddy/buddy-auth "3.0.1"]]
+                 [buddy/buddy-auth "3.0.1"]
+                 [babashka/fs "0.0.5"]]
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler upgraded-winner.handler/app
          :init upgraded-winner.handler/init

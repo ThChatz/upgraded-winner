@@ -89,7 +89,6 @@ CREATE TYPE media_type AS ENUM ('photo', 'video', 'audio');
 create table if not exists media (
        id serial primary key,
        type media_type,
-       uri text not null
 );
 
 
