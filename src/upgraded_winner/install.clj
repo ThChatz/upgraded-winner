@@ -18,15 +18,15 @@
 ;; make the database
 (defn make-database! []
   (try
-    (do
-      (db-do-commands
-       (assoc db :dbname "") false
-       (slurp (resource "db_install.sql")))
-      (db-do-prepared
-       db false
-       [(slurp (resource "db_maketables.sql"))]))
+    (db-do-commands
+     (assoc db :dbname "") false
+     (slurp (resource "db_install.sql")))
     nil))
 
-;; 
-(make-database!)
+(defn make-tables! []
+  (db-do-prepared
+       db false
+       [(slurp (resource "db_maketables.sql"))]))
 
+;; (make-database!)
+;; (make-tables!)

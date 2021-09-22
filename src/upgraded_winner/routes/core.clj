@@ -5,7 +5,8 @@
             [upgraded-winner.routes.anti-forgery-token :as anti-forgery-token]
             [upgraded-winner.routes.post :as post]
             [upgraded-winner.routes.post.comment :as post.comment]
-            [upgraded-winner.routes.post.comments :as post.comments]))
+            [upgraded-winner.routes.post.comments :as post.comments]
+            [upgraded-winner.routes.media :as media]))
 
 
 (def route-tree
@@ -13,6 +14,7 @@
    user/route
    session/route
    post/route
+   media/route
    ["/*" {:handler (create-resource-handler)}]])
 
 

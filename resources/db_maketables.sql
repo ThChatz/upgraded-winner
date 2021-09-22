@@ -1,3 +1,16 @@
+DO $$ BEGIN
+      CREATE TYPE reaction_t AS ENUM ('like', 'dislike', 'love');
+EXCEPTION
+	WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+      CREATE TYPE media_type AS ENUM ('photo', 'video', 'audio');
+EXCEPTION
+	WHEN duplicate_object THEN null;
+END $$;
+
+
 -- tables
 create table if not exists usr (
        id serial primary key,
@@ -76,7 +89,7 @@ create table if not exists comment_post (
        content text
 );
 
-CREATE TYPE reaction_t AS ENUM ('like', 'dislike', 'love');
+
 
 create table if not exists usr_react_post (
        usr integer,
@@ -84,11 +97,12 @@ create table if not exists usr_react_post (
        post integer
 );
 
-CREATE TYPE media_type AS ENUM ('photo', 'video', 'audio');
+
 
 create table if not exists media (
        id serial primary key,
-       type media_type,
+       type media_type not null,
+       filename varchar(50)
 );
 
 
@@ -105,4 +119,3 @@ create table if not exists job_qualification (
        job integer,
        qualification integer
 );
-
