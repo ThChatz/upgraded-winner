@@ -5,3 +5,6 @@
          :user "postgres"
          :host "db"
          :password "1234"})
+
+(defn kw->enum [keyword]
+  (format "'%s'" (name keyword)))

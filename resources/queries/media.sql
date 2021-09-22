@@ -2,10 +2,11 @@
 -- :command :returning-execute
 -- :result :1
 -- :doc Add new media file to the database; returns the id
+-- :require [upgraded-winner.db :refer [kw->enum]]
 INSERT INTO media (type)
 
 VALUES (
---~ (str \' (name (:type params)) \' "::media_type")
+--~ (kw->enum (:type params))
 )
 RETURNING id
 
@@ -17,5 +18,10 @@ WHERE id=:id
 
 -- :name get-media :? :1
 -- :doc Returns the media of the provided id and type(optional)
+-- :require [upgraded-winner.db :refer [kw->enum]]
 SELECT * FROM media
---~ (str "WHERE id=" (:id params) (if (contains? params :type) (str " AND '" (name (:type params)) \' "::media_type") ""))
+WHERE id=:id AND filename IS NOT NULL
+/*~
+(if (contains? params :type) (str " AND type=" (kw->enum (:type params))))
+~*/
+

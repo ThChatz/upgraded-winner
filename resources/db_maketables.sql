@@ -102,6 +102,7 @@ create table if not exists usr_react_post (
 create table if not exists media (
        id serial primary key,
        type media_type not null,
+       content_type not null,
        filename varchar(50)
 );
 

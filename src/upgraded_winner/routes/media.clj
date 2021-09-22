@@ -97,15 +97,17 @@
 
 (hugsql/def-sqlvec-fns "queries/media.sql")
 
-(defn make-filename [tempfile-name media-id]
-  (str media-id "." (fs/extension tempfile-name)))
+(defn make-filename [filename media-id]
+  (str media-id "." (fs/extension filename)))
 
 
-(defn tempfile->media [media-root-dir tempfile type]
+(defn tempfile->media [media-root-dir tempfile filename type]
   (let [{id :id} (add-media db {:type type})
-        media-path (make-filename tempfile id)]
+        media-path (make-filename filename id)]
     (do
       (fs/move tempfile (str media-root-dir "/" media-path))
+      (print tempfile)
+      (update-filename db {:filename media-path :id id})
       id)))
 
 
@@ -113,10 +115,23 @@
 
 (defn make-post-handler [media-root type]
   (fn [req]
-    (tempfile->media media-root
-                     (-> req :parameters :multipart :file :tempfile)
-                     type)))
+    {:status 200
+     :body {:id (tempfile->media media-root
+                                 (-> req :parameters :multipart :file :tempfile)
+                                 (-> req :parameters :multipart :file :filename)
+                                 type)}}))
 
+
+(get-media db {:id 25})
+
+(defn get-handler [req]
+  (let [{{{id :media-id} :path} :parameters} req
+        db-result (get-media db {:id id})
+        status (if (nil? db-result) 404 303)
+        body ({404 {:error "Media not found."}
+               303 (:filename db-result)} status)]
+    {:status status
+     :body body}))
 
 ;; ================================================================================
 ;;                                     ROUTES
@@ -139,14 +154,9 @@
      :post
      {:parameters {:multipart {:file audio-upload-spec}}
       :handler (make-post-handler media-root :audio)}}]
-   ["/:media-id"
+   ["/:media-filename"
     {:name ::media-by-id
      :get
-     {:parameters {:path {:media-id pos-int?}}
-      :handler (fn [req]
-                 {:status 307
-                  :body (:filename (get-media db {:id (-> req
-                                                          :parameters
-                                                          :path
-                                                          :media-id)}))})}}]])
+     {
+      :handler (create-file-handler {:parameter :media-filename :root media-root})}}]])
 
