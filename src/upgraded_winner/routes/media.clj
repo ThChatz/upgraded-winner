@@ -13,6 +13,13 @@
    {:name ::media-id
     :reason "Media ids are positive integers"}))
 
+(def tempfile-spec
+  (st/spec
+   {:name ::tempfile
+    :reason "Tempfile not created"
+    :spec #(= (type %) java.io.File)}))
+
+
 (def media-spec-template
   {:name ::media
    :spec {:content-type (constantly nil)
@@ -36,11 +43,6 @@
 
 
 
-(def tempfile-spec
-  (st/spec
-   {:name ::tempfile
-    :reason "Tempfile not created"
-    :spec #(= (type %) java.io.File)}))
 
 (def content-type-audio-spec
   (st/spec

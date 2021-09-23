@@ -4,8 +4,7 @@
             [clojure.string :as str]
             [upgraded-winner.db :refer [db]]
             [buddy.core.hash :refer [sha256]]
-            [buddy.core.codecs :refer [bytes->hex]]
-            [upgraded-winner.routes.user.profile-pic :as pic]))
+            [buddy.core.codecs :refer [bytes->hex]]))
 
 
 ;; specs
@@ -89,7 +88,6 @@
                    :multipart {:picture (complement nil?)}}
       :handler post-handler}}]
    ["/user"
-    pic/route
     ["/:user-id"
      {:name ::user-id
       :get
