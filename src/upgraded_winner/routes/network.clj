@@ -29,6 +29,8 @@
   ["/network"
    {:name ::network
     :post
-    {:parameters {:body {:friend id-spec}}}
+    {:parameters {:body {:friend id-spec}}
+     :handler post-handler}
     :delete
-    {:parameters {:body {:friend id-spec}}}}])
+    {:parameters {:body {:friend id-spec}}
+     :handler delete-handler}}])

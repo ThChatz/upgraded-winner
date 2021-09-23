@@ -10,6 +10,12 @@ EXCEPTION
 	WHEN duplicate_object THEN null;
 END $$;
 
+DO $$ BEGIN
+      CREATE TYPE notification_type AS ENUM ('comment', 'like', 'friend-req', 'friend-accepted');
+EXCEPTION
+	WHEN duplicate_object THEN null;
+END $$;
+
 
 -- tables
 create table if not exists usr (
@@ -58,8 +64,10 @@ create table if not exists usr_friend_req (
 -- );
 
 create table if not exists conversation_message (
+       usr integer,
        conversation integer,
-       message text
+       message text,
+       time timestamp
 );
 
 create table if not exists conversation (
@@ -82,9 +90,9 @@ create table if not exists post (
 );
 
 create table if not exists comment_post (
+       id serial primary key,
        usr integer,
        post integer,
-       comment serial primary key,
        created_at timestamp default Now(),
        content text
 );
@@ -118,4 +126,33 @@ create table if not exists jobs (
 create table if not exists job_qualification (
        job integer,
        qualification integer
+);
+
+create table if not exists notifications (
+       id serial primary key,
+       usr integer,
+       type notification_type,
+       pic integer,
+       time timestamp
+);
+
+create table if not exists comment_notification (
+       id integer,
+       comment_id integer
+);
+
+create table if not exists like_notification (
+       id integer,
+       post_id integer,
+       friend_id integer
+);
+
+create table if not exists friend_req_notification (
+       id integer,
+       friend_id integer
+);
+
+create table if not exists friend_accepted_notification (
+       id integer,
+       friend_id integer
 );
