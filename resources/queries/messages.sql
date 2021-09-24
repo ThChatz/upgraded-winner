@@ -17,9 +17,9 @@ WHERE usr=:usr
 
 -- :name get-conv-messages :?
 -- :doc get the messages of a conversation
---~ :require [upgraded-winner.db :refer [page]]
+-- :require [upgraded-winner.db :refer [page]]
 SELECT * FROM conversation_message 
 WHERE conversation=:conversation
-ORDER BY time
 --~ (page params)
+ORDER BY time
 

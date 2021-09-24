@@ -10,12 +10,11 @@
   (format "'%s'" (name keyword)))
 
 (defn page [params]
-  (str
-   (if (contains? params :page-size)
-     "LIMIT :page-size")
-   (if (and (contains? params :page-size)
-            (contains? params :page-num))
-     (do
-       (assoc params :offset (* (:page-size params) 
-                                (:page-num params)))
-       "OFFSET :offset"))))
+  (let [f_ (fn [x] (if (empty? x) nil x))
+        f #(f_ (str %1 %2 %3))]
+    (f (if (contains? params :before)
+         "AND time > :before")
+       (if (contains? params :after)
+         "AND time < :after")
+       (if (contains? params :limit)
+         "LIMIT :limit"))))

@@ -32,5 +32,5 @@ LEFT JOIN friend_req_accepted_notification on notifications.id=friend_req_accept
 LEFT JOIN like_notification on notifications.id=like_notification.id
 LEFT JOIN comment_notification on notifications.id=comment_notification.id
 WHERE usr=:usr 
-ORDER BY time
 --~ (page params)
+ORDER BY time

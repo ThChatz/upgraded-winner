@@ -124,7 +124,7 @@
                                  type)}}))
 
 
-(get-media db {:id 25})
+;; (get-media db {:id 25})
 
 (defn get-handler [req]
   (let [{{{id :media-id} :path} :parameters} req
