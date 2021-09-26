@@ -1,8 +1,7 @@
 (ns upgraded-winner.routes.post.comments
   (:require [hugsql.core :as hugsql]
-            [clojure.spec.alpha :as s]
-            [clojure.string :as str]
-            [upgraded-winner.db :refer [ db ]]))
+            [upgraded-winner.routes.post :refer [post-id-spec]]
+            [upgraded-winner.db :refer [db]]))
 
 (hugsql/def-db-fns "queries/post.comments.sql")
 
@@ -20,5 +19,5 @@
 (def route
   ["/post/:post-id/comments/:page"
    {:name ::comments
-    :get {:parameters {:path {:post-id pos-int? :page pos-int?}}
+    :get {:parameters {:path {:post-id post-id-spec :page pos-int?}}
             :handler get-handler}}])

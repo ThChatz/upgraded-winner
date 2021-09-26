@@ -1,7 +1,7 @@
 (ns upgraded-winner.routes.post.comment
   (:require [hugsql.core :as hugsql]
-            [clojure.spec.alpha :as s]
             [clojure.string :as str]
+            [upgraded-winner.routes.post :refer [post-id-spec]]
             [upgraded-winner.db :refer [ db ]]))
 
 (hugsql/def-db-fns "queries/post.comment.sql")
@@ -39,15 +39,15 @@
   ["/post/:post-id"
    ["/comment"
     {:name ::comment
-     :post {:parameters {:path {:post-id int?}
+     :post {:parameters {:path {:post-id post-id-spec}
                          :body {:text (complement nil?)}}
             :handler post-handler}}]
    ["/comment/:comment-id"
     {:name ::comment-id
      :put
-     {:parameters {:path {:post-id int? :comment-id int?}
+     {:parameters {:path {:post-id post-id-spec :comment-id int?}
                    :body {:text (complement nil?)}}
       :handler put-handler}
      :delete
-     {:parameters {:path {:post-id int? :comment-id int?}}
+     {:parameters {:path {:post-id post-id-spec :comment-id int?}}
       :handler delete-handler}}]])

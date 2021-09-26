@@ -1,13 +1,16 @@
 (ns upgraded-winner.routes.post
   (:require [hugsql.core :as hugsql]
-            [clojure.spec.alpha :as s]
+            [spec-tools.core :as st]
             [clojure.string :as str]
             [upgraded-winner.db :refer [ db ]]
             [upgraded-winner.routes.post.comment :as comment]
             [upgraded-winner.routes.post.comments :as comments]))
 
-(s/def ::post-id int?)
-(s/def ::post-id int?)
+(def post-id-spec
+  (st/spec
+   {:name ::post-id
+    :spec pos-int?
+    :reason "post-id must be a positive integer"}))
 
 
 (hugsql/def-db-fns "queries/post.sql")
@@ -54,20 +57,14 @@
    ["/post/:post-id"
     {:name ::post-id
      :get
-     {:parameters {:path {:post-id pos-int?}}
+     {:parameters {:path {:post-id post-id-spec}}
       :handler get-handler}
      :put
      {:parameters {:body {:text (complement nil?)}
-                   :path {:post-id pos-int?}}
+                   :path {:post-id post-id-spec}}
       :handler put-handler}
      :delete
-     {:parameters {:path {:post-id pos-int?}}
+     {:parameters {:path {:post-id post-id-spec}}
       :handler delete-handler}}]
    comment/route
    comments/route])
-
-
-(insert-post db {:usr 1 :media 0 :content "test"})
-(java.sql.Timestamp. 1650000000000)
-(.getTime (:created_at (first (get-post db {:id 1}))))
-(get-post db {:id 1})

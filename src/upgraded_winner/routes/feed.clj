@@ -10,7 +10,7 @@
 
 (defn get-handler [{{usr :identity} :session}]
   {:status 200
-   :body {:post_ids (get-feed db {:usr usr})
+   :body {:post_ids (map :id (get-feed db {:usr usr}))
           :usr usr}})
 
 (def route
