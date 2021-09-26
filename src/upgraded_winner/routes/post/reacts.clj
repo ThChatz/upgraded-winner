@@ -14,3 +14,6 @@
 (defn delete-handler [{{{post :post-id} :path} :parameters
                      {usr :identity} :session}]
   (delete-react db {:post post :usr usr}))
+
+(defn get-handler [{{{post-id :post-id} :path} :parameters}]
+  (get-))

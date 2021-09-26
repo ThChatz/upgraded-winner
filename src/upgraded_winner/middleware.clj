@@ -47,7 +47,7 @@
   [   
 [wrap-session {:store session-store}]
    muuntaja/format-middleware
-   exception/exception-middleware
+  ;;  exception/exception-middleware
    parameters-middleware
    multipart/multipart-middleware
    [wrap-defaults my-defaults]
