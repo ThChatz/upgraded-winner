@@ -62,18 +62,18 @@
    ["/user"
     {:name ::user
      :post
-     {:parameters {:body {:first-name ::name
-                          :last-name ::name
+     {:parameters {:body {:first_name ::name
+                          :last_name ::name
                           :password ::password
                           :email ::email
                           :job (complement nil?)
                           :bio (complement nil?)
                           :phone ::phone
-                          :email-private boolean?
-                          :bio-private boolean?
-                          :phone-private boolean?
-                          :job-private boolean?
-                          :network-private boolean?
+                          :email_private boolean?
+                          :bio_private boolean?
+                          :phone_private boolean?
+                          :job_private boolean?
+                          :network_private boolean?
                           :picture pos-int?}}
       :handler post-handler}}]
    ["/user"
@@ -82,5 +82,3 @@
       :get
       {:parameters {:path {:user-id ::user-id}}
        :handler get-handler}}]]])
-
-

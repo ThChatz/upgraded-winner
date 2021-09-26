@@ -16,25 +16,42 @@ phone_private,
 job_private,
 network_private)
 VALUES 
-(:first-name, 
-:last-name, 
+(:first_name, 
+:last_name, 
 :password, 
 :email,
 :picture,
 :bio,
 :job,
 :phone,
-:is-admin,
-:email-private,
-:bio-private,
-:phone-private,
-:job-private,
-:network-private)
+:is_admin,
+:email_private,
+:bio_private,
+:phone_private,
+:job_private,
+:network_private)
 
 -- :name get-usr :1
 -- :doc Returns user information from id
-SELECT * FROM usr
-WHERE id=:id
+SELECT
+usr.id,
+usr.first_name,
+usr.last_name,
+usr.email,
+usr.bio,
+usr.job,
+usr.phone,
+usr.is_admin,
+usr.email_private,
+usr.bio_private,
+usr.phone_private,
+usr.job_private,
+usr.network_private,
+media.filename AS picture
+FROM usr
+LEFT JOIN media
+ON media.id = usr.picture
+WHERE usr.id=:id
 
 -- :name get-users-are-connected :1
 -- :doc TRUE if user1 and user2 are friends

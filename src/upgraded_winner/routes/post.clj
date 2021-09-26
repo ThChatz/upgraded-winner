@@ -12,12 +12,15 @@
 
 (hugsql/def-db-fns "queries/post.sql")
 
+(defn format-post [post]
+  (update post :created_at #(.getTime %)))
+
 (defn post-handler [req]
   (let [{{usr :identity} :session {{text :text} :body} :parameters} req
         resp (insert-post db {:usr usr :media 0 :content text})]
     (if (= resp 1)
       {:status 200
-       :body resp})))
+       :body (-> req :session)})))
 
 (defn put-handler [req]
   (let [{{usr :identity} :session
@@ -31,7 +34,7 @@
   (let [post (first (get-post db {:id (-> req :parameters :path :post-id)}))]
     (if (nil? post)
       {:status 404 :body {:error "Post not found"}}
-      {:status 200 :body post})))
+      {:status 200 :body (format-post post)})))
 
 (defn delete-handler [req]
   (let [{{usr :identity} :session
@@ -64,3 +67,7 @@
    comments/route])
 
 
+(insert-post db {:usr 1 :media 0 :content "test"})
+(java.sql.Timestamp. 1650000000000)
+(.getTime (:created_at (first (get-post db {:id 1}))))
+(get-post db {:id 1})

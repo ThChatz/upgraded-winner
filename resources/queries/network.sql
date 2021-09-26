@@ -12,12 +12,14 @@ IF (SELECT COUNT(1) FROM usr WHERE id=:usr OR id=:friend) = 2
 
     IF (SELECT COUNT(1) 
             FROM usr_friend_req 
-            WHERE usr=:usr AND  friend=:friend) > 0
+            WHERE usr=:friend AND  friend=:usr) > 0
         INSERT INTO usr_friend (usr, friend)
-        VALUES (:usr, :friend)
+        VALUES (:usr, :friend), (:friend, :usr)
+	WHERE NOT EXISTS (SELECT * FROM usr_friend WHERE usr=:usr AND friend=:friend)
     ELSE
         INSERT INTO usr_friend_req (usr, friend)
         VALUES (:usr, :friend)
+	WHERE NOT EXISTS (SELECT * FROM usr_friend WHERE usr=:usr AND friend=:friend)
 ELSE 
     NULL;
     
