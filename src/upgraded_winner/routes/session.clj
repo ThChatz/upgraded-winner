@@ -11,8 +11,7 @@
 
 (defn post-handler [{{user-info :body} :parameters session :session}]
   (let [user (->> (update user-info :password #(-> % sha256 bytes->hex))
-                  (get-login db ,,,)
-                  first)]
+                  (get-login db ,,,))]
     (if (nil? user)
       {:status 418 :body {:error "Invalid email or password"}}
       {:status 200
