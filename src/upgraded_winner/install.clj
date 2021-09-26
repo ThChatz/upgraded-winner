@@ -7,13 +7,8 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [clojure.java.jdbc :refer [db-do-commands with-db-connection db-do-prepared]]
-            [clojure.java.io :refer [resource]]))
-
-(def db {:dbtype "postgresql"
-         :dbname "upgraded_winner"
-         :user "postgres"
-         :host "db"
-         :password "1234"})
+            [clojure.java.io :refer [resource]]
+            [upgraded-winner.db :refer [db]]))
 
 ;; make the database
 (defn make-database! []

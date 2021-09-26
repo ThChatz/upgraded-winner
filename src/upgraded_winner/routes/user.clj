@@ -23,12 +23,6 @@
 (s/def ::phone
        #(re-matches #"\+?[0-9]+" %))
 
-(s/def ::bool
-       (s/or
-        :str-true (partial = "true")
-        :str-false (partial = "false")
-        :bool boolean?))
-
 (hugsql/def-db-fns "queries/user.sql")
 (hugsql/def-sqlvec-fns "queries/user.sql")
 
@@ -38,21 +32,16 @@
       (nth 0)
       :result))
 
-;; (defn post-handler [{{params :body} :parameters}]
-;;   (do
-;;     (insert-new-user db (-> params
-;;                             (assoc ,,, :is-admin false)
-;;                             (update
-;;                              :password
-;;                              #(-> % sha256 bytes->hex))))
-;;     {:status 200
-;;      :body "User successfully created!"}))
+(defn post-handler [{{params :body} :parameters}]
+  (do
+    (insert-new-user db (-> params
+                            (assoc ,,, :is-admin false)
+                            (update
+                             :password
+                             #(-> % sha256 bytes->hex))))
+    {:status 200
+     :body "User successfully created!"}))
 
-
-(defn post-handler [req]
-  {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body (-> req :multipart-params)})
 
 (defn get-handler [req]
   (let [user-id-param (-> req :parameters :path :user-id)
@@ -80,12 +69,12 @@
                           :job (complement nil?)
                           :bio (complement nil?)
                           :phone ::phone
-                          :email-private ::bool
-                          :bio-private ::bool
-                          :phone-private ::bool
-                          :job-private ::bool
-                          :network-private ::bool}
-                   :multipart {:picture (complement nil?)}}
+                          :email-private boolean?
+                          :bio-private boolean?
+                          :phone-private boolean?
+                          :job-private boolean?
+                          :network-private boolean?
+                          :picture pos-int?}}
       :handler post-handler}}]
    ["/user"
     ["/:user-id"

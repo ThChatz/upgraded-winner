@@ -29,7 +29,7 @@ VALUES
 :bio-private,
 :phone-private,
 :job-private,
-:network-private);
+:network-private)
 
 -- :name get-usr :1
 -- :doc Returns user information from id
