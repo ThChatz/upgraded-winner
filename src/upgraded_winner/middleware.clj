@@ -20,6 +20,21 @@
         response
         (assoc response :session {})))))
 
+
+(defn wrap-install-check [handler]
+  (fn [req]
+    (try
+      (handler req)
+      (catch Exception e
+        (if
+            ((complement nil?)
+             (re-matches
+              #"org.postgresql.util.PSQLException: FATAL: database \".*\" does not exist"
+              (str e)))
+          {:status 503 :body {:error "Application not Installed"}}
+          (throw e))))))
+
+
 ;; Muuntaja configuration
 
 (def muuntaja-instance
@@ -47,7 +62,8 @@
   [   
 [wrap-session {:store session-store}]
    muuntaja/format-middleware
-  ;;  exception/exception-middleware
+   exception/exception-middleware
+   wrap-install-check
    parameters-middleware
    multipart/multipart-middleware
    [wrap-defaults my-defaults]
