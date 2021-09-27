@@ -1,10 +1,11 @@
-(ns upgraded-winner.db)
+(ns upgraded-winner.db
+  (:require [environ.core :refer [env]]))
 
 (def db {:dbtype "postgresql"
-         :dbname "upgraded_winner"
-         :user "postgres"
-         :host "db"
-         :password "1234"})
+         :dbname (env :db-name)
+         :user (env :db-user)
+         :host (env :db-host)
+         :password (env :db-password)})
 
 (defn kw->enum [keyword]
   (format "'%s'" (name keyword)))

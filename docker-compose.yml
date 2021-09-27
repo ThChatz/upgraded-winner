@@ -9,6 +9,13 @@ services:
     volumes:
       - .:/usr/src/app
       - ./m2:/root/.m2
+    environment:
+      - API_ROOT=/api
+      - FRONTEND_ROOT=/web
+      - DB_NAME=upgraded_winner
+      - DB_USER=postgres
+      - DB_HOST=db
+      - DB_PASSWORD=1234
   db:
     image: postgres
     restart: always
