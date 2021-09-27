@@ -20,7 +20,8 @@
   :repl-options 
   {:host "0.0.0.0"
    :port 3001
-   :init-ns upgraded-winner-dev.repl}  
+   :init-ns upgraded-winner-dev.repl
+   :init (start-server)}  
   :profiles
   {:uberjar {:aot :all}
    :production
