@@ -1,4 +1,4 @@
-(ns upgraded-winner.routes.messages
+(ns upgraded-winner.routes.conversations
   (:require [hugsql.core :as hugsql]
             [upgraded-winner.db :refer [ db ]]))
 
@@ -15,8 +15,9 @@
 
 (defn post-message [req]
   (insert-message db {}))
+
 (def route
-  ["/conversations"
+  [["/conversations"
    {:name ::conversations
     :get
     {:parameters {:path {:page pos-int?}}
@@ -25,4 +26,4 @@
    {:name ::conversation-messages
     :get
     {:parameters {:path {:page pos-int? :conv-id pos-int?}}
-     :handler get-messages-handler}}])
+     :handler get-messages-handler}}]])
