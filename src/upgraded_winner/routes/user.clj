@@ -35,7 +35,7 @@
 (defn post-handler [{{params :body} :parameters}]
   (do
     (insert-new-user db (-> params
-                            (assoc ,,, :is-admin false)
+                            (assoc ,,, :is_admin false)
                             (update
                              :password
                              #(-> % sha256 bytes->hex))))
