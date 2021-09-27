@@ -4,13 +4,10 @@
             [clojure.string :as str]
             [upgraded-winner.db :refer [ db ]]
             [upgraded-winner.routes.post.comment :as comment]
-            [upgraded-winner.routes.post.comments :as comments]))
+            [upgraded-winner.routes.post.comments :as comments])
+  (:use [upgraded-winner.specs.post]))
 
-(def post-id-spec
-  (st/spec
-   {:name ::post-id
-    :spec pos-int?
-    :reason "post-id must be a positive integer"}))
+
 
 
 (hugsql/def-db-fns "queries/post.sql")

@@ -1,7 +1,7 @@
 (ns upgraded-winner.routes.post.comment
   (:require [hugsql.core :as hugsql]
             [clojure.string :as str]
-            [upgraded-winner.routes.post :refer [post-id-spec]]
+            [upgraded-winner.specs.post :refer [post-id-spec]]
             [upgraded-winner.db :refer [ db ]]))
 
 (hugsql/def-db-fns "queries/post.comment.sql")
