@@ -1,4 +1,4 @@
-(ns upgraded-winner.routes.messages
+(ns upgraded-winner.routes.conversations
   (:require [hugsql.core :as hugsql]
             [upgraded-winner.db :refer [ db ]]))
 
