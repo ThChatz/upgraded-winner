@@ -67,7 +67,7 @@
    comments/route])
 
 
-(insert-post db {:usr 1 :media 0 :content "test"})
-(java.sql.Timestamp. 1650000000000)
-(.getTime (:created_at (first (get-post db {:id 1}))))
-(get-post db {:id 1})
+;; (insert-post db {:usr 1 :media 0 :content "test"})
+;; (java.sql.Timestamp. 1650000000000)
+;; (.getTime (:created_at (first (get-post db {:id 1}))))
+;; (get-post db {:id 1})

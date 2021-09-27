@@ -1,7 +1,7 @@
 version: '2.4'
 
 services:
-  app:
+  api:
     build: .
     ports:
       - "3000:3000"             # web
@@ -20,6 +20,28 @@ services:
     restart: always
     ports:
       - 3002:8080
+  react:
+    build: "./upgraded-winner-frontend/"
+    ports:
+      - "3003:3000"
+    volumes:
+      - './upgraded-winner-frontend:/app'
+    environment:
+          - CHOKIDAR_USEPOLLING=true
+          - PUBLIC_URL=web
+          - API_ROOT=/api
+  nginx:
+    image: nginx:latest
+    container_name: production_nginx
+    volumes:
+      - './nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+              # - /star_xx_com.pem:/etc/nginx/cert/star_xx_com.pem
+              # - /star_xx_com.key:/etc/nginx/cert/star_xx_com.key
+              # - /star_xx_com.crt:/etc/nginx/cert/star_xx_com.crt
+    ports:
+      - 8080:8080
+      - 443:443
+
 # networks:
 #   default:
 #     driver: host
