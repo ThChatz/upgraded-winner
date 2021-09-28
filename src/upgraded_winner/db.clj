@@ -7,6 +7,14 @@
          :host (env :db-host)
          :password (env :db-password)})
 
+(defn map-filter
+  ([pred map]
+  (->> map
+       (filter pred)
+       (into {})))
+  ([pred]
+   (partial map-filter pred)))
+
 (defn kw->enum [keyword]
   (format "'%s'" (name keyword)))
 
@@ -19,3 +27,4 @@
          "AND time < :after")
        (if (contains? params :limit)
          "LIMIT :limit"))))
+

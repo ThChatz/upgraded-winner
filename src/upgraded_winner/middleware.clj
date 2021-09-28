@@ -31,7 +31,8 @@
              (re-matches
               #"org.postgresql.util.PSQLException: FATAL: database \".*\" does not exist"
               (str e)))
-          {:status 503 :body {:error "Application not Installed"}}
+          {:status 503 :body {:cause "Application not Installed"
+                              :message "Please install the application to continue"}}
           (throw e))))))
 
 

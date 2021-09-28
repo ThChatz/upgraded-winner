@@ -1,7 +1,7 @@
 (ns upgraded-winner.routes.post.reacts
   (:require [hugsql.core :as hugsql]
             [upgraded-winner.db :refer [db]]
-            [upgraded-winner.routes.post :refer [post-id-spec]]))
+            [upgraded-winner.specs.post :refer [post-id-spec]]))
 
 (hugsql/def-db-fns "queries/post.reacts.sql")
 

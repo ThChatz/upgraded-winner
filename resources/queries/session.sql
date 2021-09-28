@@ -1,5 +1,7 @@
 -- :name get-login :? :1
 -- :doc Returns user information from email and password
+/*~ :require [buddy.core.hash :refer [sha256]]
+             [buddy.core.codecs :refer [bytes->hex]] ~*/
 SELECT
 usr.id,
 usr.first_name,
@@ -18,4 +20,6 @@ media.filename AS picture
 FROM usr
 LEFT JOIN media
 ON media.id = usr.picture
-WHERE email=:email AND password=:password
+WHERE email=:email
+AND /*~(str "password=" 
+    	    (-> params :password sha256 bytes->hex)) ~*/

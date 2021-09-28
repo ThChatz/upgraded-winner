@@ -24,7 +24,7 @@ VALUES
 :bio,
 :job,
 :phone,
-:is_admin,
+FALSE,
 :email_private,
 :bio_private,
 :phone_private,

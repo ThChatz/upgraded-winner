@@ -2,11 +2,11 @@
   (:require [clojure.java.jdbc :as jdbc]
             [clojure.java.io :refer [resource]]
             [hugsql.core :as hugsql]
-            [buddy.core.hash :refer [sha256]]
-            [buddy.core.codecs :refer [bytes->hex]]
-            [upgraded-winner.db :refer [db]]))
+            [upgraded-winner.db :refer [db]]
+            [upgraded-winner.specs.user :refer
+             [user-email-spec user-password-spec]]))
 
-(hugsql/def-db-fns "queries/user.sql")
+(hugsql/def-db-fns "queries/install.sql")
 ;; insert-new-user
 
 ;; make the database
@@ -22,17 +22,14 @@
     nil))
 
 (defn make-admin! [{{usr-info :body} :parameters}]
-  (insert-new-user db (-> usr-info
-                          (update :password #(-> % sha256 bytes->hex))
-                          (assoc :is-admin true))))
+  (insert-new-admin db usr-info))
 
 (def route
   ["/install"
    {:post
-    {:parameters {:body {:first-name ::name
-                         :last-name ::name
-                         :password ::password
-                         :email ::email}}
+    {:parameters {:body {:email user-email-spec
+                         :password user-password-spec
+                         :name user-name-spec}}
      :handler (fn [req] (do (make-database!)
                            (make-admin! req)))}}])
 

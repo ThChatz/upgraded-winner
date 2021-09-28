@@ -24,16 +24,16 @@ create table if not exists usr (
        last_name varchar(50) not null,
        password varchar(64) not null,
        email varchar(255) unique not null,
-       picture int,
-       bio text not null,
-       job varchar(50) not null,
-       phone varchar(20) not null,
+       picture,
+       bio text,
+       job varchar(50),
+       phone varchar(20),
        is_admin boolean not null default false,
-       email_private bool not null default true,
-       bio_private bool not null default true,
-       phone_private bool not null default true,
-       job_private bool not null default true,
-       network_private bool not null default true
+       email_private bool,
+       bio_private bool,
+       phone_private bool,
+       job_private bool,
+       network_private bool
 );
 
 create table if not exists qualifications (
