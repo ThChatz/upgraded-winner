@@ -61,9 +61,9 @@
 
 (def top-level-middleware
   [   
-[wrap-session {:store session-store}]
+   [wrap-session {:store session-store}]
    muuntaja/format-middleware
-   exception/exception-middleware
+   ;; exception/exception-middleware
    wrap-install-check
    parameters-middleware
    multipart/multipart-middleware

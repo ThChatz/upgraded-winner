@@ -64,7 +64,8 @@
      {:parameters {:path {:post-id post-id-spec}}
       :handler delete-handler}}]
    comment/route
-   comments/route])
+   comments/route
+   ])
 
 
 ;; (insert-post db {:usr 1 :media 0 :content "test"})

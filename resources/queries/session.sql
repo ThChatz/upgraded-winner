@@ -1,7 +1,7 @@
 -- :name get-login :? :1
 -- :doc Returns user information from email and password
-/*~ :require [buddy.core.hash :refer [sha256]]
-             [buddy.core.codecs :refer [bytes->hex]] ~*/
+/* :require [buddy.core.hash :refer [sha256]]
+            [buddy.core.codecs :refer [bytes->hex]] */
 SELECT
 usr.id,
 usr.first_name,

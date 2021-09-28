@@ -19,5 +19,6 @@
 (def route
   ["/post/:post-id/comments/:page"
    {:name ::comments
-    :get {:parameters {:path {:post-id post-id-spec :page pos-int?}}
+    :get {:parameters {:path {:post-id post-id-spec
+                              :page pos-int?}}
             :handler get-handler}}])
