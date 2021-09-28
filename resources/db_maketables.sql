@@ -24,7 +24,7 @@ create table if not exists usr (
        last_name varchar(50) not null,
        password varchar(64) not null,
        email varchar(255) unique not null,
-       picture,
+       picture integer,
        bio text,
        job varchar(50),
        phone varchar(20),
