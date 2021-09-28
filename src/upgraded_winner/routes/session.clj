@@ -7,6 +7,7 @@
              [user-email-spec user-password-spec]]))
 
 (hugsql/def-db-fns "queries/session.sql")
+(hugsql/def-sqlvec-fns "queries/session.sql")
 
 
 (defn post-handler [{{user-info :body} :parameters session :session}]

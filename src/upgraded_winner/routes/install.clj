@@ -9,8 +9,6 @@
 (hugsql/def-db-fns "queries/install.sql")
 (hugsql/def-sqlvec-fns "queries/install.sql")
 
-(insert-new-admin-sqlvec {:email "foo" :password "bar" :name "jfalsd"})
-
 ;; insert-new-user
 
 ;; make the database
@@ -35,7 +33,8 @@
                          :password user-password-spec
                          :name user-name-spec}}
      :handler (fn [req] (do (make-database!)
-                           (make-admin! req)))}}])
+                           (make-admin! req)
+                           {:status 200 :body "Success!"}))}}])
 
 
 ;; (make-database!)

@@ -15,6 +15,9 @@
   ([pred]
    (partial map-filter pred)))
 
+(defn sql-quote [s]
+  (str "'" s "'"))
+
 (defn kw->enum [keyword]
   (format "'%s'" (name keyword)))
 

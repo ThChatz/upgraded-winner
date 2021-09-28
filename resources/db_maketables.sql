@@ -21,7 +21,7 @@ END $$;
 create table if not exists usr (
        id serial primary key,
        first_name varchar(50) not null,
-       last_name varchar(50) not null,
+       last_name varchar(50),
        password varchar(64) not null,
        email varchar(255) unique not null,
        picture integer,
