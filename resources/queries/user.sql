@@ -33,6 +33,8 @@ FALSE,
 
 -- :name get-usr :1
 -- :doc Returns user information from id
+/* :require [environ.core :refer [env]]
+   	    [upgraded-winner.db :refer [sql-quote]]*/
 SELECT
 usr.id,
 usr.first_name,
@@ -47,7 +49,8 @@ usr.bio_private,
 usr.phone_private,
 usr.job_private,
 usr.network_private,
-media.filename AS picture
+CONCAT(/*~(-> env :api-root sql-quote)~*/media.filename)
+AS picture
 FROM usr
 LEFT JOIN media
 ON media.id = usr.picture
