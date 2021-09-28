@@ -7,6 +7,10 @@
              [user-email-spec user-password-spec user-name-spec]]))
 
 (hugsql/def-db-fns "queries/install.sql")
+(hugsql/def-sqlvec-fns "queries/install.sql")
+
+(insert-new-admin-sqlvec {:email "foo" :password "bar" :name "jfalsd"})
+
 ;; insert-new-user
 
 ;; make the database
