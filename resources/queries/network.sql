@@ -8,21 +8,21 @@ ELSE
 
 -- :name add-friend :!
 -- :doc Marks the usr and friend as friends
-IF (SELECT COUNT(1) FROM usr WHERE id=:usr OR id=:friend) = 2
+INSERT INTO usr_friend (usr, friend)
+VALUES (:usr, :friend), (:friend, :usr)
+WHERE NOT EXISTS (SELECT * FROM usr_friend WHERE usr=:usr AND friend=:friend)
 
-    IF (SELECT COUNT(1) 
-            FROM usr_friend_req 
-            WHERE usr=:friend AND  friend=:usr) > 0
-        INSERT INTO usr_friend (usr, friend)
-        VALUES (:usr, :friend), (:friend, :usr)
-	WHERE NOT EXISTS (SELECT * FROM usr_friend WHERE usr=:usr AND friend=:friend)
-    ELSE
-        INSERT INTO usr_friend_req (usr, friend)
-        VALUES (:usr, :friend)
-	WHERE NOT EXISTS (SELECT * FROM usr_friend WHERE usr=:usr AND friend=:friend)
-ELSE 
-    NULL;
-    
+
+-- :name add-friend-req :!
+-- :doc Adds a friend request
+INSERT INTO usr_friend_req (usr, friend)
+VALUES (:usr, :friend)
+WHERE NOT EXISTS (SELECT * FROM usr_friend WHERE usr=:usr AND friend=:friend OR friend=:usr AND usr=:friend)
+
+-- :name friend? :? :1
+SELECT * FROM usr_friend
+WHERE usr=:usr AND friend=:friend
+
 -- :name get-friends :? :*
 -- :doc Returns a list of friends (pageified)
 SELECT * FROM 
