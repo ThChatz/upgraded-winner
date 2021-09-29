@@ -5,7 +5,9 @@
             [upgraded-winner.db :refer [db]]
             [buddy.core.hash :refer [sha256]]
             [buddy.core.codecs :refer [bytes->hex]]
-            [upgraded-winner.specs.user :as specs]))
+            [upgraded-winner.specs.user :as specs]
+            [upgraded-winner.middleware.network :refer
+             [wrap-connected? wrap-me?]]))
 
 
 
@@ -33,11 +35,16 @@
   (let [user-id-param (-> req :parameters :path :user-id)
         session-identity (-> req :session :identity)
         user-id (if (int? user-id-param) user-id-param session-identity)
-        connected (connected? session-identity user-id)
-        user-info (get-usr db {:id user-id :connected connected})]
+        connected? (-> req :connected?)
+        me? (-> req :me?)
+        user-info (get-usr db {:id user-id :connected connected?})]
     (if (empty? user-info)
       {:status 404 :body {:error (str "User " user-id-param " not found.")}}
-      {:status 200 :body (-> user-info first (dissoc :password))})))
+      {:status 200 :body (-> user-info
+                             first
+                             (dissoc :password)
+                             (assoc :connected connected?)
+                             (assoc :me me?))})))
 
 ;; ================================================================================
 ;;                                     ROUTES
@@ -55,4 +62,5 @@
      {:name ::user-id
       :get
       {:parameters {:path {:user-id specs/user-id-spec}}
+       :middleware [wrap-connected? wrap-me?]
        :handler get-handler}}]]])
