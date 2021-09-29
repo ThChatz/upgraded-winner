@@ -1,10 +1,9 @@
--- :name insert-comment :! :n
+-- :name insert-comment :returning-execute :1
 -- :doc Creates a new post in the database
-INSERT INTO comment_post (usr, post, text)
-IF (SELECT COUNT(1) FROM post WHERE id=:id) > 0
-   VALUES (:usr, :post, :text);
-ELSE
-   SELECT NULL;
+INSERT INTO comment_post (usr, post, content)
+VALUES (:usr, :post, :content)
+RETURNING id, usr, post, content
+
 
 
 

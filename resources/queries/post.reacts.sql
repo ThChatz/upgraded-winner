@@ -1,13 +1,11 @@
--- :name add-react :! :returning-execute
+-- :name add-react :returning-execute :1
 -- :doc adds a reaction of type :reaction from :usr on :post
-IF NOT EXISTS (SELECT * FROM usr_react_post WHERE usr=:usr AND post=:post)
+-- :require [upgraded-winner.db :refer [kw->enum]]
 INSERT INTO usr_react_post (usr, reaction, post)
-VALUES (:usr, :reaction, :post)
-ELSE
-UPDATE usr_react_post
-SET reaction=:reaction
-WHERE usr=:usr AND post=:post
-RETURNING usr, react, post
+VALUES (:usr, /*~(-> params :reaction kw->enum)~*/, :post)
+ON CONFLICT (usr, post) DO 
+UPDATE SET reaction=/*~(-> params :reaction kw->enum)~*/
+RETURNING usr, reaction, post
 
 -- :name delete-react :! :returning-execute
 -- :doc deletes a reaction

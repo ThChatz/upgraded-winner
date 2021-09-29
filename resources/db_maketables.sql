@@ -102,7 +102,8 @@ create table if not exists comment_post (
 create table if not exists usr_react_post (
        usr integer,
        reaction reaction_t,
-       post integer
+       post integer,
+       constraint up primary key (usr, post)
 );
 
 

@@ -16,7 +16,10 @@ post.content,
 (SELECT COUNT(reaction) FROM usr_react_post WHERE reaction='like' AND post=:id) AS like_count,
 (SELECT COUNT(reaction) FROM usr_react_post WHERE reaction='dislike' AND post=:id) AS dislike_count,
 (SELECT COUNT(reaction) FROM usr_react_post WHERE reaction='love' AND post=:id) AS love_count,
-(SELECT COUNT(id) FROM comment_post WHERE post=:id) AS commment_count
+(SELECT COUNT(id) FROM comment_post WHERE post=:id) AS comment_count
+/*~
+(if (contains? params :usr) ", (SELECT reaction from usr_react_post WHERE post=:id AND usr=:usr)")
+~*/
 FROM post
 WHERE id=:id
 

@@ -10,12 +10,11 @@
   "Post a comment to the post"
   [req]
   (let [{{usr :identity} :session
-         {{text :text} :body
-         {post :post-id} :path} :parameters} req
-        resp (insert-comment db {:usr usr :post post :text text})]
-    (if (= resp 1)
-      {:status 200
-       :body resp})))
+         {{content :content} :body
+          {post :post-id} :path} :parameters} req
+        resp (insert-comment db {:usr usr :post post :content content})]
+    {:status 200
+     :body resp}))
 
 (defn put-handler [req]
   (let [{{usr :identity} :session
@@ -40,7 +39,7 @@
    ["/comment"
     {:name ::comment
      :post {:parameters {:path {:post-id post-id-spec}
-                         :body {:text (complement nil?)}}
+                         :body {:content (complement nil?)}}
             :handler post-handler}}]
    ["/comment/:comment-id"
     {:name ::comment-id

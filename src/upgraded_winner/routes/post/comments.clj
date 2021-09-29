@@ -7,18 +7,15 @@
 
 (defn get-handler [req]
   (let [{{usr :identity} :session
-         {{post :post-id page :page} :path} :parameters} req
-        resp (get-comments-of-post db {:post post :page-size 20 :page-num page})]
-    (if (zero? (count resp))
-      {:status 404
-       :body {:error "Page number out of bounds"}}
-      {:status 200
-     :body resp})))
+         {{post :post-id} :path} :parameters} req
+        resp (get-comments-of-post db {:post post})]
+    {:status 200
+     :body resp}))
 
+(get-comments-of-post db {:post 1})
 
 (def route
-  ["/post/:post-id/comments/:page"
+  ["/post/:post-id/comments"
    {:name ::comments
-    :get {:parameters {:path {:post-id post-id-spec
-                              :page pos-int?}}
+    :get {:parameters {:path {:post-id post-id-spec}}
             :handler get-handler}}])

@@ -4,7 +4,8 @@
             [clojure.string :as str]
             [upgraded-winner.db :refer [ db ]]
             [upgraded-winner.routes.post.comment :as comment]
-            [upgraded-winner.routes.post.comments :as comments])
+            [upgraded-winner.routes.post.comments :as comments]
+            [upgraded-winner.routes.post.reacts :as reacts])
   (:use [upgraded-winner.specs.post]))
 
 
@@ -31,7 +32,11 @@
      :body resp}))
 
 (defn get-handler [req]
-  (let [post (first (get-post db {:id (-> req :parameters :path :post-id)}))]
+  (let [post-id (-> req :parameters :path :post-id)
+        usr-id (-> req :session :identity)
+        db-params (conj {:id post-id}
+                        (if (nil? usr-id) {} {:usr usr-id}))
+        post (first (get-post db db-params))]
     (if (nil? post)
       {:status 404 :body {:error "Post not found"}}
       {:status 200 :body (format-post post)})))
@@ -65,8 +70,8 @@
       :handler delete-handler}}]
    comment/route
    comments/route
+   reacts/route
    ])
-
 
 ;; (insert-post db {:usr 1 :media 0 :content "test"})
 ;; (java.sql.Timestamp. 1650000000000)
