@@ -49,7 +49,7 @@ usr.bio_private,
 usr.phone_private,
 usr.job_private,
 usr.network_private,
-CONCAT(/*~(-> env :api-root sql-quote)~*/media.filename)
+CONCAT(/*~(-> env :api-root sql-quote)~*/, '/', media.filename)
 AS picture
 FROM usr
 LEFT JOIN media

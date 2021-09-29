@@ -6,7 +6,7 @@
 (def user-id-spec
   (st/spec
    {:name ::user-id
-    :spec #(or (pos-int? %) (= "my-account" %))
+    :spec pos-int?
     :reason "user-id must be a positive integer"}))
 
 (def user-name-spec
