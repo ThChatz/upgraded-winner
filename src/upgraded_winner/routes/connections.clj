@@ -16,10 +16,9 @@
       (friend-req? db inv-params)
       (do (remove-friend-req db inv-params)
           (add-friend db params)
-          (let [conv (new-conv db {})
-                f #(insert-usr-conv db {:usr %
-                                        :conversation conv})]
-            (map f [usr friend]))
+          (let [conv (:id (new-conv db {}))]
+            (insert-usr-conv db {:usr usr :conversation conv})
+            (insert-usr-conv db {:usr friend :conversation conv}))
           "connection added")
       :else (do (add-friend-req db params) "request sent"))))
 
@@ -39,3 +38,9 @@
    [""
     {:name ::connections
      :handler get-handler}]])
+
+;; (add-friend- {:usr 1 :friend 2})
+;; (add-friend- {:usr 2 :friend 1})
+
+;; (new-conv db {})
+;; (:id (new-conv db {}))

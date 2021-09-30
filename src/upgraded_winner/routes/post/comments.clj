@@ -12,8 +12,6 @@
     {:status 200
      :body resp}))
 
-(get-comments-of-post db {:post 1})
-
 (def route
   ["/post/:post-id/comments"
    {:name ::comments

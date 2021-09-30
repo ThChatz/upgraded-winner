@@ -15,11 +15,6 @@
 (hugsql/def-sqlvec-fns "queries/user.sql")
 
 
-(defn connected? [user1 user2]
-  (-> (get-users-are-connected db {:user1 user1 :user2 user2})
-      (nth 0)
-      :result))
-
 (defn post-handler [{{params :body} :parameters}]
   (do
     (insert-new-user db (-> params

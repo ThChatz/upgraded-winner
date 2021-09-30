@@ -69,7 +69,7 @@ create table if not exists conversation_message (
        usr integer,
        conversation integer,
        message text,
-       time timestamp
+       time timestamp default Now()
 );
 
 create table if not exists conversation (

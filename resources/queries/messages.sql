@@ -1,7 +1,7 @@
 -- :name insert-message :!
 -- :doc inserts a message
-INSERT INTO conversation_message (conversation, message)
-VALUES (:conversation, :message)
+INSERT INTO conversation_message (usr, conversation, message)
+VALUES (:usr, :conversation, :message)
 
 -- :name insert-usr-conv :!
 -- :doc inserts a new conversation to a user

@@ -7,13 +7,6 @@
 (hugsql/def-db-fns "queries/post.reacts.sql")
 (hugsql/def-sqlvec-fns "queries/post.reacts.sql")
 
-
-(def react?
-  (st/spec
-   {:name ::react
-    :spec #{"like" "dislike" "love"}
-    :reason "reaction must be one of 'like', 'dislike', 'love'"}))
-
 (def react?
   (st/spec
    {:name ::react
