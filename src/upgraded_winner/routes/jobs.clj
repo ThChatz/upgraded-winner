@@ -46,23 +46,30 @@
 (defn post-handler [req]
   {:status 200
    :body (put-job db (assoc (-> req :parameters :body)
-                           :usr
-                           (-> req :session :identity)))})
+                            :usr
+                            (-> req :session :identity)))})
 
 (defn get-handler [req]
   {:status 200
    :body (get-job db {:id (-> req :parameters :path :job-id)})})
 
+(defn get-jobs-handler [req]
+  {:status 200
+   :body (get-jobs db {:id (-> req :parameters :path :job-id)})})
+
+
 (def route
   [""
    ["/jobs"
     {:name ::jobs
-    :post {:parameters {:body {:pic pic-param-spec
-                               :title title-param-spec
-                               :description-short description-short-param-spec
-                               :description-full description-full-param-spec}}
-           :handler post-handler}}]
+     :post {:parameters {:body {:pic pic-param-spec
+                                :title title-param-spec
+                                :description_short description-short-param-spec
+                                :description_full description-full-param-spec}}
+            :handler post-handler}
+     :get { 
+     :handler get-jobs-handler}}]
    ["/jobs/:job-id"
     {:name ::jobs-by-id
-    :get {:parameters {:path {:job-id id-param-spec}}
-          :handler get-handler}}]])
+     :get {:parameters {:path {:job-id id-param-spec}}
+           :handler get-handler}}]])
