@@ -40,16 +40,17 @@
 
 (def route
   [""
+   ["/connections/requests"
+    {:name ::requests
+     :handler get-requests-handler}]
    ["/connections/:user-id"
     {:name ::with-id
      :parameters {:path {:user-id user-id-spec}}
      :post post-handler}]
    ["/connections"
     {:name ::connections
-     :handler get-handler}]
-   ["/requests"
-    {:name ::requests
-     :handler get-requests-handler}]])
+     :handler get-handler}]])
+
 
 ;; (add-friend- {:usr 1 :friend 2})
 ;; (add-friend- {:usr 2 :friend 1})

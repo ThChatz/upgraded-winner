@@ -25,7 +25,7 @@
    conn/route
    install/route
    conv/route
-   ["/*" {:handler (create-resource-handler)}]])
+  ["/*" {:handler (create-resource-handler)}]])
 
 
 
