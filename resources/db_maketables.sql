@@ -49,13 +49,15 @@ create table if not exists usr_qualifications (
 
 create table if not exists usr_friend (
        usr integer,
-       friend integer
+       friend integer,
+       constraint uf primary key (usr, friend)
 );
 
 create table if not exists usr_friend_req (
        usr integer,
        created_at timestamp default Now(), 
-       friend integer
+       friend integer,
+       constraint ufreq primary key (usr, friend)
 );
 
 -- create table if not exists usr_blocked (

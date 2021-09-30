@@ -8,6 +8,12 @@ VALUES (:conversation, :message)
 INSERT INTO usr_conversation (usr, conversation)
 VALUES (:usr, :conversation)
 
+-- :name new-conv :returning-execute :1
+-- :doc creates a new conversation in the database
+INSERT INTO conversation DEFAULT VALUES
+RETURNING conv_id AS id
+
+
 -- :name get-usr-convs :?
 -- :doc get the conversations of a user
 --~ :require [upgraded-winner.db :refer [page]]

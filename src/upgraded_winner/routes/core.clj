@@ -8,7 +8,8 @@
             [upgraded-winner.routes.media :as media]
             [upgraded-winner.routes.network :as network]
             [upgraded-winner.routes.feed :as feed]
-            [upgraded-winner.routes.install :as install]))
+            [upgraded-winner.routes.install :as install]
+            [upgraded-winner.routes.connections :as conn]))
 
 
 (def route-tree
@@ -20,6 +21,7 @@
    jobs/route
    network/route
    feed/route
+   conn/route
    install/route
    ["/*" {:handler (create-resource-handler)}]])
 
