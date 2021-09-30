@@ -8,36 +8,46 @@
 (hugsql/def-db-fns "queries/messages.sql")
 
 (defn get-conv-handler [req]
-  (get-usr-convs db {:usr (-> req :session :identity)}))
+  {:status 200
+   :body (get-usr-convs db {:usr (-> req :session :identity)})})
 
 (defn get-messages-handler [req]
-  (get-conv-messages db (merge
-                         {:usr (-> req :session :identity) 
-                          :conversation (-> req
-                                            :parameters
-                                            :path
-                                            :conv-id)}
-                         (-> req :parameters :query))))
+  {:status 200
+   :body (map #(update % :time (fn [x] (.getTime x)))
+              (get-conv-messages db
+                                 (merge
+                                  {:usr
+                                   (-> req :session :identity) 
+                                   :conversation
+                                   (-> req
+                                       :parameters
+                                       :path
+                                       :conv-id)}
+                                  (-> req :parameters :query))))})
 
 (defn post-message [{{{msg :message} :body
                       {cnv :conv-id} :path} :parameters
                      {usr :identity} :session}]
-  (insert-message db {:usr usr
+  (do (insert-message db {:usr usr
                       :message msg
-                      :conversation cnv}))
+                          :conversation cnv})
+      {:status 200}))
 
 (def route
   [["/conversations"
     {:name ::conversations
      :get
      {:handler get-conv-handler}}]
-   ["/conversations/:conv-id/"
+   ["/conversations/:conv-id"
     {:name ::conversation-messages
+     :parameters {:path {:conv-id pos-int?}}
      :get
-     {:parameters {:path {:conv-id pos-int?}
-                   :query {(ds/opt :before) pos-int?
+     {:parameters {:query {(ds/opt :before) pos-int?
                            (ds/opt :after) pos-int?
                            (ds/opt :limit) pos-int?}}
-      :handler get-messages-handler}}]])
+      :handler get-messages-handler}
+     :post
+     {:parameters {:body {:message string?}}
+      :handler post-message}}]])
 
 ;; (get-conv-handler {:session {:identity 1}})

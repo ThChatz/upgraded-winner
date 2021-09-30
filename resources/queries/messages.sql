@@ -16,16 +16,13 @@ RETURNING conv_id AS id
 
 -- :name get-usr-convs :?
 -- :doc get the conversations of a user
---~ :require [upgraded-winner.db :refer [page]]
 SELECT * FROM usr_conversation 
 WHERE usr=:usr
---~ (page params)
 
 -- :name get-conv-messages :?
 -- :doc get the messages of a conversation
 -- :require [upgraded-winner.db :refer [page]]
 SELECT * FROM conversation_message 
 WHERE conversation=:conversation
---~ (page params)
-ORDER BY time
+--~ (page "time" params)
 
