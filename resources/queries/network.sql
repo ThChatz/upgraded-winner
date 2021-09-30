@@ -23,6 +23,10 @@ WHERE usr=:usr AND friend=:friend
 SELECT * FROM usr_friend_req
 WHERE usr=:usr AND friend=:friend
 
+-- :name get-friend-reqs :? :*
+SELECT * FROM usr_friend_req
+WHERE friend=:usr 
+
 -- :name get-friends :? :*
 -- :doc Returns a list of friends
 SELECT * FROM usr_friend
