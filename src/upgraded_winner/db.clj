@@ -21,13 +21,22 @@
 (defn kw->enum [keyword]
   (format "'%s'" (name keyword)))
 
-(defn page [params]
-  (let [f_ (fn [x] (if (empty? x) nil x))
-        f #(f_ (str %1 %2 %3))]
-    (f (if (contains? params :before)
-         "AND time > :before")
-       (if (contains? params :after)
-         "AND time < :after")
-       (if (contains? params :limit)
-         "LIMIT :limit"))))
+(defn page
+  ([time-key params]
+   (format "%s
+            %s
+            %s
+            %s"
+           (if (contains? params :before)
+             (format "AND %s < TO_TIMESTAMP(:before / 1000)"
+                     time-key)
+             "")
+           (if (contains? params :after)
+             (format "AND %s > TO_TIMESTAMP(:after / 1000)"
+                     time-key)
+             "")
+           (format "ORDER BY %s DESC" time-key)
+           (if (contains? params :limit)
+             "LIMIT :limit"
+             ""))))
 

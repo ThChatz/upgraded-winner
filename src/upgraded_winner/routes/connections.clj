@@ -25,17 +25,21 @@
 
 (defn post-handler [{{{friend :user-id} :path} :parameters
                      {usr :identity} :session}]
-  (add-friend- {:usr usr :friend friend}))
+  
+  {:status 200
+   :body {:message (add-friend- {:usr usr
+                                 :friend friend})}})
 
 (defn get-handler [{{usr :identity} :session}]
   {:status 200 :body (get-friends db {:usr usr})})
 
 (def route
-  ["/connections"
-   ["/:user-id"
+  [""
+   ["/connections/:user-id"
     {:name ::with-id
-     :parameters {:path {:user-id user-id-spec}}}]
-   [""
+     :parameters {:path {:user-id user-id-spec}}
+     :post post-handler}]
+   ["/connections"
     {:name ::connections
      :handler get-handler}]])
 
