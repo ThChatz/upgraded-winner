@@ -135,8 +135,7 @@ create table if not exists notifications (
        id serial primary key,
        usr integer,
        type notification_type,
-       pic integer,
-       time timestamp
+       time timestamp default Now()
 );
 
 create table if not exists comment_notification (

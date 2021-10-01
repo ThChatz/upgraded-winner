@@ -1,8 +1,8 @@
 -- :name insert-notification :returning-execute :1
 -- :doc Inserts a new notification
 -- :require [upgraded-winner.db :refer [kw->enum]]
-INSERT INTO notifications (usr, type, pic)
-VALUES (:usr, /*~(-> params :type kw->enum)~*/, :pic)
+INSERT INTO notifications (target, type, origin)
+VALUES (:target, /*~(-> params :type kw->enum)~*/, :origin)
 RETURNING id
 
 -- :name insert-comment-notification :! 
@@ -12,15 +12,15 @@ VALUES (:id, :comment_id)
 
 -- :name insert-like-notification :! 
 -- :doc Inserts a new comment notification
-INSERT INTO like_notification (id, post_id, friend_id)
-VALUES (:id, :post_id, :friend_id)
+INSERT INTO like_notification (id, post_id)
+VALUES (:id, :post_id, :me)
 
 -- :name insert-friend-req-notification :! 
 -- :doc Inserts a new comment notification
 INSERT INTO friend_req_notification (id, friend_id)
 VALUES (:id, :friend_id)
 
--- :name insert-friend-req-accepted-notification :! 
+-- :name insert-friend-notification :! 
 -- :doc Inserts a new comment notification
 INSERT INTO friend_accepted_notification (id, friend_id)
 VALUES (:id, :friend_id)

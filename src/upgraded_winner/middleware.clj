@@ -1,7 +1,7 @@
 (ns upgraded-winner.middleware
   (:require [upgraded-winner.xml-format :refer [xml-format]]
             [muuntaja.core :as m]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+            [ring.middleware.defaults :refer [wrap-defaults secure-site-defaults]]
             [reitit.ring.middleware.muuntaja :as muuntaja]
             [reitit.ring.coercion :as coercion]
             [reitit.ring.middleware.exception :as exception]
@@ -39,7 +39,7 @@
 
 (def my-defaults
   (->
-   site-defaults
+   secure-site-defaults
    (assoc :params false)
    (assoc :session false)
    (assoc-in [:security :anti-forgery] false)
