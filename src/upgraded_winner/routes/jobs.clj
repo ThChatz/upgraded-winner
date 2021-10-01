@@ -55,7 +55,7 @@
 
 (defn get-jobs-handler [req]
   {:status 200
-   :body (get-jobs db {:id (-> req :parameters :path :job-id)})})
+   :body (get-jobs db {})})
 
 
 (def route

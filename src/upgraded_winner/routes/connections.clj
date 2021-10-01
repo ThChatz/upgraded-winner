@@ -33,8 +33,16 @@
 (defn get-handler [{{usr :identity} :session}]
   {:status 200 :body (get-friends db {:usr usr})})
 
+(defn get-requests-handler [{{usr :identity} :session}]
+  {:status 200 :body (get-friend-reqs db {:usr usr})})
+
+
+
 (def route
   [""
+   ["/connections/requests"
+    {:name ::requests
+     :handler get-requests-handler}]
    ["/connections/:user-id"
     {:name ::with-id
      :parameters {:path {:user-id user-id-spec}}
@@ -42,6 +50,7 @@
    ["/connections"
     {:name ::connections
      :handler get-handler}]])
+
 
 ;; (add-friend- {:usr 1 :friend 2})
 ;; (add-friend- {:usr 2 :friend 1})
