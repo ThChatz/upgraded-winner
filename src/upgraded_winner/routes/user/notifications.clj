@@ -6,12 +6,12 @@
 (hugsql/def-db-fns "queries/notifications.sql")
 
 (defn get-handler [req]
-  (get-notifications db {:usr (-> req :session :identity)}))
+  {:status 200
+  :body (get-notifications db {:usr (-> req :session :identity)})})
 
 
 (def route
   ["/notifications"
    {:name ::notifications
     :get 
-    {:parameters {:path {:page pos-int?}}
-     :handler get-handler}}])
+    {:handler get-handler}}])

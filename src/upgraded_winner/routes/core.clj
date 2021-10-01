@@ -10,7 +10,8 @@
             [upgraded-winner.routes.feed :as feed]
             [upgraded-winner.routes.install :as install]
             [upgraded-winner.routes.connections :as conn]
-            [upgraded-winner.routes.conversations :as conv]))
+            [upgraded-winner.routes.conversations :as conv]
+            [upgraded-winner.routes.user.notifications :as notifs]))
 
 
 (def route-tree
@@ -25,6 +26,7 @@
    conn/route
    install/route
    conv/route
+   notifs/route
   ["/*" {:handler (create-resource-handler)}]])
 
 
