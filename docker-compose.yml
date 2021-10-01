@@ -42,9 +42,8 @@ services:
     container_name: production_nginx
     volumes:
       - './nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
-              # - /star_xx_com.pem:/etc/nginx/cert/star_xx_com.pem
-              # - /star_xx_com.key:/etc/nginx/cert/star_xx_com.key
-              # - /star_xx_com.crt:/etc/nginx/cert/star_xx_com.crt
+      - './host.key:/etc/nginx/localhost.key'
+      - './host.cert:/etc/nginx/localhost.cert'
     ports:
       - 8080:8080
       - 443:443
