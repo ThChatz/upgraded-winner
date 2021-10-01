@@ -9,7 +9,9 @@
             [reitit.ring.middleware.parameters :refer [parameters-middleware]]
             [ring.middleware.session :refer [wrap-session]]
             [ring.middleware.session.memory :refer [memory-store]]
-            [reitit.ring.middleware.multipart :as multipart]))
+            [reitit.ring.middleware.multipart :as multipart]
+            [upgraded-winner.middleware.install-check :refer
+             [wrap-install-check]]))
 
 
 
@@ -21,19 +23,7 @@
         (assoc response :session {})))))
 
 
-(defn wrap-install-check [handler]
-  (fn [req]
-    (try
-      (handler req)
-      (catch Exception e
-        (if
-            ((complement nil?)
-             (re-matches
-              #"org.postgresql.util.PSQLException: FATAL: database \".*\" does not exist"
-              (str e)))
-          {:status 503 :body {:cause "Application not Installed"
-                              :message "Please install the application to continue"}}
-          (throw e))))))
+
 
 
 ;; Muuntaja configuration

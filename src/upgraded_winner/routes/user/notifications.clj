@@ -15,3 +15,5 @@
     :get 
     {:parameters {:path {:page pos-int?}}
      :handler get-handler}}])
+
+(insert-notification db {:usr 1 :type :comment :pic 1 :comment_id 1})

@@ -1,7 +1,9 @@
--- :name insert-notification :! 
+-- :name insert-notification :returning-execute :1
 -- :doc Inserts a new notification
+-- :require [upgraded-winner.db :refer [kw->enum]]
 INSERT INTO notifications (usr, type, pic)
-VALUES (:usr, :type, :pic)
+VALUES (:usr, /*~(-> params :type kw->enum)~*/, :pic)
+RETURNING id
 
 -- :name insert-comment-notification :! 
 -- :doc Inserts a new comment notification
