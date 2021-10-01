@@ -1,19 +1,20 @@
-# upgraded-winner
+# Τεχνολογίες Εφαρμογών Διαδικτύου
+### Όνομα Web App: Upgraded Winner
+## Μέλη
 
-Εργασία ΤΕΔΙ 2021 -- Εθνικό και Καποδιστριακό Πανεπιστήμιο Αθηνών
+-   Θεόδωρος Χατζηιωαννίδης - 1115201600197
+-   Βασίλειος Πουλόπουλος - 1115201600141
 
-## Prerequisites
+## Εκτέλεση
 
-You will need [Leiningen][1] 1.7.0 or above installed.
+Για να γίνει το **build** πρέπει να είναι εγκατεστημένο το **docker** και να εκτελεστεί η εντολή: 
 
-[1]: https://github.com/technomancy/leiningen
+    docker-compose up
 
-## Running
+Στη συνέχεια ο χρήστης μπορεί να επισκευθεί το web app στο 
 
-To start a web server for the application, run:
+    localhost:8080/web
 
-    lein ring server
+## Επιλογή Τεχνολογιών
 
-## License
-
-Copyright © 2021 FIXME
+Για το **front-end** χρησιμοποιήσαμε **ReactJS**, ενώ για το **backend** χρησιμοποιήσαμε **Clojure**.
